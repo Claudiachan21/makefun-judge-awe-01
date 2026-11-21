@@ -14,5 +14,12 @@ const TEXT =
 
 const OUTPUT_DIR = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 
+// The gate allows 1–280 characters; fail loudly instead of shipping
+// an entry the judge never sees.
+const LENGTH = [...TEXT].length;
+if (LENGTH < 1 || LENGTH > 280) {
+  throw new Error(`entry text is ${LENGTH} characters, must be 1–280`);
+}
+
 mkdirSync(OUTPUT_DIR, { recursive: true });
 writeFileSync(join(OUTPUT_DIR, 'entry.txt'), TEXT, 'utf8');
